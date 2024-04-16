@@ -1,7 +1,21 @@
-export default function cleanSet(set, startString) {
-  if (!startString || !startString.length || typeof startString !== 'string' || typeof set !== 'object' || !set || !set.size) {
+const cleanSet = (set, startString) => {
+  const str = [];
+
+  if (
+    typeof set !== 'object'
+    || typeof startString !== 'string'
+    || startString.length === 0
+  ) {
     return '';
   }
 
-  return [...set].filter((value) => value.startsWith(startString)).map((value) => value.slice(startString.length)).join('-');
-}
+  for (const item of set) {
+    if (item && item.startsWith(startString)) {
+      str.push(item.slice(startString.length));
+    }
+  }
+
+  return str.join('-');
+};
+
+export default cleanSet;

@@ -59,7 +59,7 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
   }
 });
 
-const SERVER_ROUTE_HANDLER = [
+const SERVER_ROUTE_HANDLERS = [
   {
     route: '/',
     handler(_, res) {
@@ -98,7 +98,7 @@ const SERVER_ROUTE_HANDLER = [
 ];
 
 app.on('request', (req, res) => {
-  for (const routeHandler of SERVER_ROUTE_HANDLER) {
+  for (const routeHandler of SERVER_ROUTE_HANDLERS) {
     if (routeHandler.route === req.url) {
       routeHandler.handler(req, res);
       break;

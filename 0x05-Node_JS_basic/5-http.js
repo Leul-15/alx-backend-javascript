@@ -1,4 +1,4 @@
-onst http = require('http');
+const http = require('http');
 const fs = require('fs');
 
 const PORT = 1245;
@@ -18,11 +18,11 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
       if (data) {
         const reportParts = [];
         const fileLines = data.toString('utf-8').trim().split('\n');
-        const studentGroup = {};
-        const dbFieldName = fileLines[0].split(',');
-        const studentPropName = dbFieldName.slice(
+        const studentGroups = {};
+        const dbFieldNames = fileLines[0].split(',');
+        const studentPropNames = dbFieldNames.slice(
           0,
-          dbFieldName.length - 1,
+          dbFieldNames.length - 1,
         );
 
         for (const line of fileLines.slice(1)) {
@@ -32,21 +32,21 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
             studentRecord.length - 1,
           );
           const field = studentRecord[studentRecord.length - 1];
-          if (!Object.keys(studentGroup).includes(field)) {
-            studentGroup[field] = [];
+          if (!Object.keys(studentGroups).includes(field)) {
+            studentGroups[field] = [];
           }
-          const studentEntries = studentPropName.map((propName, idx) => [
+          const studentEntries = studentPropNames.map((propName, idx) => [
             propName,
             studentPropValues[idx],
           ]);
-          studentGroup[field].push(Object.fromEntries(studentEntries));
+          studentGroups[field].push(Object.fromEntries(studentEntries));
         }
 
-        const totalStudent = Object.values(studentGroup).reduce(
+        const totalStudents = Object.values(studentGroups).reduce(
           (pre, cur) => (pre || []).length + cur.length,
         );
-        reportParts.push(`Number of students: ${totalStudent}`);
-        for (const [field, group] of Object.entries(studentGroup)) {
+        reportParts.push(`Number of students: ${totalStudents}`);
+        for (const [field, group] of Object.entries(studentGroups)) {
           reportParts.push([
             `Number of students in ${field}: ${group.length}.`,
             'List:',
